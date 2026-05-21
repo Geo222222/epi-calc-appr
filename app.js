@@ -1,10 +1,10 @@
+const DEFAULT_PROFIT_PCT = 0.75;
+const DEFAULT_FEE_PCT = 0.1;
+
 const inputs = {
-  symbol: document.getElementById("symbol"),
   balance: document.getElementById("balance"),
   leverage: document.getElementById("leverage"),
   creditUtil: document.getElementById("creditUtil"),
-  profitPct: document.getElementById("profitPct"),
-  feePct: document.getElementById("feePct"),
   price: document.getElementById("price"),
   steps: document.getElementById("steps"),
 };
@@ -42,21 +42,17 @@ function calculate() {
   const initialBalance = parseNumber(inputs.balance.value);
   const leverage = parseNumber(inputs.leverage.value);
   const creditUtilPct = parseNumber(inputs.creditUtil.value);
-  const profitPct = parseNumber(inputs.profitPct.value);
-  const feePct = parseNumber(inputs.feePct.value);
   const price = parseNumber(inputs.price.value);
-  let steps = Math.max(1, Math.floor(parseNumber(inputs.steps.value) || 1));
+  const steps = Math.max(1, Math.floor(parseNumber(inputs.steps.value) || 1));
 
   leverageHeader.textContent = Number.isFinite(leverage) ? `${leverage}X` : "—X";
 
-  footerParams.textContent = `Util ${formatPercent(creditUtilPct || 0)} • Profit ${formatPercent(profitPct || 0)} • Fee ${formatPercent(feePct || 0)}`;
+  footerParams.textContent = `Util ${formatPercent(creditUtilPct || 0)} • Profit ${formatPercent(DEFAULT_PROFIT_PCT)} • Fee ${formatPercent(DEFAULT_FEE_PCT)}`;
 
   const invalid =
     !Number.isFinite(initialBalance) ||
     !Number.isFinite(leverage) ||
     !Number.isFinite(creditUtilPct) ||
-    !Number.isFinite(profitPct) ||
-    !Number.isFinite(feePct) ||
     !Number.isFinite(price) ||
     initialBalance <= 0 ||
     leverage <= 0 ||
@@ -70,7 +66,7 @@ function calculate() {
   }
 
   const utilRate = creditUtilPct / 100;
-  const netRate = (profitPct - feePct) / 100;
+  const netRate = (DEFAULT_PROFIT_PCT - DEFAULT_FEE_PCT) / 100;
 
   let balance = initialBalance;
   const rows = [];

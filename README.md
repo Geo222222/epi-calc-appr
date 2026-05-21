@@ -24,9 +24,9 @@ Then open the URL shown in your terminal (usually `http://localhost:3000`).
 ## How to Use
 
 1. Enter your trading pair in **Symbol** (display only).
-2. Set **Account Balance**, **Leverage**, **Credit Utilization %**, **Profit %**, **Fee %**, and **Price Per Asset**.
+2. Set **Account Balance**, **Leverage**, **Credit Utilization %**, and **Price Per Asset**.
 3. Set **Steps** to simulate one or more compounding trades.
 4. The table updates automatically with balance, buying power, credit used, and asset amount per step.
 5. The footer shows total **Final** balance and **Profit** after all steps.
 
-Calculations assume each step reinvests net profit (profit minus fees) into the next step's balance.
+Profit and fee rates are fixed at **0.75%** and **0.10%**. Calculations assume each step reinvests net profit (profit minus fees) into the next step's balance.
