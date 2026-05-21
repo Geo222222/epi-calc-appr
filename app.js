@@ -1,18 +1,19 @@
-const DEFAULT_PROFIT_PCT = 0.75;
-const DEFAULT_FEE_PCT = 0.1;
-
-const inputs = {
-  balance: document.getElementById("balance"),
-  leverage: document.getElementById("leverage"),
-  creditUtil: document.getElementById("creditUtil"),
-  price: document.getElementById("price"),
-  steps: document.getElementById("steps"),
+const DEFAULTS = {
+  balance: 4600,
+  leverage: 400,
+  creditUtil: 50,
+  price: 2131.25,
+  steps: 1,
+  profitPct: 0.75,
+  feePct: 0.1,
 };
 
-const leverageHeader = document.getElementById("leverageHeader");
-const resultsBody = document.getElementById("resultsBody");
-const footerParams = document.getElementById("footerParams");
-const footerTotals = document.getElementById("footerTotals");
+function getInputNumber(id, fallback) {
+  const el = document.getElementById(id);
+  if (!el) return fallback;
+  const value = parseNumber(el.value);
+  return Number.isFinite(value) ? value : fallback;
+}
 
 function parseNumber(value) {
   if (typeof value !== "string") return NaN;
@@ -39,15 +40,26 @@ function formatPercent(value) {
 }
 
 function calculate() {
-  const initialBalance = parseNumber(inputs.balance.value);
-  const leverage = parseNumber(inputs.leverage.value);
-  const creditUtilPct = parseNumber(inputs.creditUtil.value);
-  const price = parseNumber(inputs.price.value);
-  const steps = Math.max(1, Math.floor(parseNumber(inputs.steps.value) || 1));
+  const leverageHeader = document.getElementById("leverageHeader");
+  const resultsBody = document.getElementById("resultsBody");
+  const footerParams = document.getElementById("footerParams");
+  const footerTotals = document.getElementById("footerTotals");
 
-  leverageHeader.textContent = Number.isFinite(leverage) ? `${leverage}X` : "—X";
+  if (!resultsBody || !footerTotals) return;
 
-  footerParams.textContent = `Util ${formatPercent(creditUtilPct || 0)} • Profit ${formatPercent(DEFAULT_PROFIT_PCT)} • Fee ${formatPercent(DEFAULT_FEE_PCT)}`;
+  const initialBalance = getInputNumber("balance", DEFAULTS.balance);
+  const leverage = getInputNumber("leverage", DEFAULTS.leverage);
+  const creditUtilPct = getInputNumber("creditUtil", DEFAULTS.creditUtil);
+  const price = getInputNumber("price", DEFAULTS.price);
+  const steps = Math.max(1, Math.floor(getInputNumber("steps", DEFAULTS.steps)));
+
+  if (leverageHeader) {
+    leverageHeader.textContent = Number.isFinite(leverage) ? `${leverage}X` : "—X";
+  }
+
+  if (footerParams) {
+    footerParams.textContent = `Util ${formatPercent(creditUtilPct)} • Profit ${formatPercent(DEFAULTS.profitPct)} • Fee ${formatPercent(DEFAULTS.feePct)}`;
+  }
 
   const invalid =
     !Number.isFinite(initialBalance) ||
@@ -66,7 +78,7 @@ function calculate() {
   }
 
   const utilRate = creditUtilPct / 100;
-  const netRate = (DEFAULT_PROFIT_PCT - DEFAULT_FEE_PCT) / 100;
+  const netRate = (DEFAULTS.profitPct - DEFAULTS.feePct) / 100;
 
   let balance = initialBalance;
   const rows = [];
@@ -105,8 +117,21 @@ function calculate() {
   footerTotals.textContent = `Final ${formatCurrency(balance)} • Profit ${formatCurrency(totalProfit)}`;
 }
 
-Object.values(inputs).forEach((input) => {
-  input.addEventListener("input", calculate);
-});
+function init() {
+  const app = document.querySelector(".app");
+  if (app) {
+    app.addEventListener("input", (event) => {
+      if (event.target instanceof HTMLInputElement) {
+        calculate();
+      }
+    });
+  }
 
-calculate();
+  calculate();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
