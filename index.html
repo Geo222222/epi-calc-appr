@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Margin Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>MARGIN CALCULATOR</h1>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar">
+        <div class="field">
+          <label for="symbol">Symbol</label>
+          <input type="text" id="symbol" value="ETH/USDT:USDT" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="balance">Account Balance (USDT)</label>
+          <input type="text" id="balance" value="4600" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="leverage">Leverage (x)</label>
+          <input type="text" id="leverage" value="400" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="creditUtil">Credit Utilization %</label>
+          <input type="text" id="creditUtil" value="50" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="profitPct">Profit Percentage %</label>
+          <input type="text" id="profitPct" value="0.75" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="feePct">Fee %</label>
+          <input type="text" id="feePct" value="0.10" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="price">Price Per Asset</label>
+          <input type="text" id="price" value="2131.25" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="steps">Steps</label>
+          <input type="text" id="steps" value="1" inputmode="numeric">
+        </div>
+      </aside>
+
+      <section class="results-panel">
+        <div class="table-wrap">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>BALANCE</th>
+                <th id="leverageHeader">400X</th>
+                <th>CREDIT UTIL</th>
+                <th>AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-left" id="footerParams">Util 50.00% • Profit 0.75% • Fee 0.10%</div>
+      <div class="footer-right" id="footerTotals">Final $0.00 • Profit $0.00</div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
